@@ -1,0 +1,40 @@
+@baseUrl=http://localhost:8080/movies
+@id={{create.response.body.id}}
+
+# @name getAll
+GET {{baseUrl}}
+
+###
+
+# @name create
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "Batman",
+  "releasedAt": "2008-07-24T00:00:00.000Z",
+  "runtime": 122,
+  "genre_id": 1
+}
+###
+
+# @name getOne
+GET {{baseUrl}}/{{id}}
+
+###
+
+# @name update
+PUT {{baseUrl}}/{{id}}
+
+{
+  "name": "Joker",
+  "releasedAt": "2001-07-24T00:00:00.000Z",
+  "runtime": 111,
+  "genre_id": 3
+}
+###
+
+# @name remove
+DELETE {{baseUrl}}/{{id}}
+
+###

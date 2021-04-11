@@ -1,0 +1,57 @@
+@baseUrl=http://localhost:8080/actors
+@id={{create.response.body.id}}
+
+# @name getAll
+GET {{baseUrl}}
+
+###
+
+# @name create
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+  "name": "Johhny Depp",
+  "bornAt": "1978-07-24T00:00:00.000Z",
+  "bio": "some random bio"
+}
+###
+
+# @name getOne
+GET {{baseUrl}}/{{id}}
+
+###
+
+# @name update
+PUT {{baseUrl}}/{{id}}
+
+{
+  "name": "Some Name",
+  "bornAt": "1958-03-23T00:00:00.000Z",
+  "bio": "bio 12345"
+}
+###
+
+# @name remove
+DELETE {{baseUrl}}/{{id}}
+
+###
+
+# @name movieList
+@id = 1
+GET {{baseUrl}}/{{id}}/movieList
+
+###
+
+# @name favouriteGenre
+@id = 1
+GET {{baseUrl}}/{{id}}/favouriteGenre
+
+###
+
+# @name characterNames
+@id = 1
+GET {{baseUrl}}/{{id}}/characterNames
+
+###
+
