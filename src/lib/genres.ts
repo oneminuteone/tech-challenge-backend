@@ -5,12 +5,35 @@ export interface Genre {
   name: string
 }
 
+export interface GenreCount {
+  name: string
+  total: number
+}
+
+export interface ActorsCount {
+  name: string
+  appearances: number
+}
+
 export function list(): Promise<Genre[]> {
   return knex.from('genre').select()
 }
 
 export function find(id: number): Promise<Genre> {
   return knex.from('genre').where({ id }).first()
+}
+
+/** @returns list of actor name and number of appearences by Genre sorted by most appearances*/
+export async function actorsInGenre(id: number): Promise<ActorsCount[]> {
+  const actorsCount = await knex
+    .select(knex.raw('actor.name, count("actor_id") as appearances'))
+    .from('movie')
+    .join('movieCharacter', 'movie.id', 'movieCharacter.movie_id')
+    .join('genre', 'genre.id', 'movie.genre_id')
+    .join('actor', 'actor.id', 'movieCharacter.actor_id')
+    .where({ genre_id: id })
+    .from('movie').groupBy('actor_id').orderBy('appearances', 'desc') as ActorsCount[]
+  return actorsCount
 }
 
 /** @returns whether the ID was actually found */

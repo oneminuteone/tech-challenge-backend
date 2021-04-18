@@ -101,5 +101,17 @@ export async function seed(knex: Knex): Promise<void> {
       actor_id:1,
       movie_id: 2,
     },
+    {
+      id: 5,
+      name: 'Joker',
+      actor_id: 2,
+      movie_id: 1,
+    },
+    {
+      id: 6,
+      name: 'Joker',
+      actor_id: 2,
+      movie_id: 2,
+    },
   ])
 }

@@ -61,6 +61,11 @@ export const actorRoutes: ServerRoute[] = [{
   options: { validate: validateParamsId },
 },{
   method: 'GET',
+  path: '/actors/{id}/numberOfMoviesInGenre',
+  handler: getActorNumberOfMoviesInGenre,
+  options: { validate: validateParamsId },
+},{
+  method: 'GET',
   path: '/actors/{id}/characterNames',
   handler: getActorCharacterNames,
   options: { validate: validateParamsId },
@@ -103,6 +108,16 @@ async function getActorFavouriteGenre(req: Request, _h: ResponseToolkit, _err?: 
   const found = await actors.findFavouriteGenre(id)
   return found || Boom.notFound()
 }
+
+async function getActorNumberOfMoviesInGenre(req: Request, _h: ResponseToolkit, _err?: Error): Promise<Lifecycle.ReturnValue> {
+  const { id } = (req.params as ParamsId)
+  const actorFound = await actors.find(id)
+  if(!actorFound) { return Boom.notFound() }
+
+  const found = await actors.findNumberOfMoviesInGenre(id)
+  return found || Boom.notFound()
+}
+
 
 async function getActorCharacterNames(req: Request, _h: ResponseToolkit, _err?: Error): Promise<Lifecycle.ReturnValue> {
   const { id } = (req.params as ParamsId)

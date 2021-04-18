@@ -47,6 +47,11 @@ export const genreRoutes: ServerRoute[] = [{
   handler: get,
   options: { validate: validateParamsId },
 },{
+  method: 'GET',
+  path: '/genres/{id}/actors',
+  handler: getActorsInGenre,
+  options: { validate: validateParamsId },
+},{
   method: 'PUT',
   path: '/genres/{id}',
   handler: put,
@@ -67,6 +72,15 @@ async function get(req: Request, _h: ResponseToolkit, _err?: Error): Promise<Lif
   const { id } = (req.params as ParamsId)
 
   const found = await genres.find(id)
+  return found || Boom.notFound()
+}
+
+async function getActorsInGenre(req: Request, _h: ResponseToolkit, _err?: Error): Promise<Lifecycle.ReturnValue> {
+  const { id } = (req.params as ParamsId)
+  const genreFound = await genres.find(id)
+  if(!genreFound) { return Boom.notFound() }
+  console.log(genreFound)
+  const found = await genres.actorsInGenre(id)
   return found || Boom.notFound()
 }
 

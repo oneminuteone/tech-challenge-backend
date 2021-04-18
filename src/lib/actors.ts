@@ -39,6 +39,17 @@ export async function findFavouriteGenre(id: number): Promise<genres.Genre| []> 
   return await genres.find(favouriteGenreId[0] || -1)
 }
 
+/** @returns the number of movies in genre for actor sorted by most appearences*/
+export async function findNumberOfMoviesInGenre(id: number): Promise<genres.GenreCount[]> {
+  return await knex
+    .select(knex.raw('genre.name, count("id") as total'))
+    .from('movie')
+    .join('movieCharacter', 'movie.id', 'movieCharacter.movie_id')
+    .join('genre', 'genre.id', 'movie.genre_id')
+    .where({ actor_id: id })
+    .from('movie').groupBy('genre_id').orderBy('total', 'desc') as genres.GenreCount[]
+}
+
 /** @returns the character names for actor with given ID  */
 export function findCharacterNames(id: number): Promise<string[]> {
   return knex.from('movieCharacter').where({actor_id: id }).select('name')
